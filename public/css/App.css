@@ -517,7 +517,7 @@ html {
 }
 
 .github_login:hover{
-  border: none;
+  border: none;  
   opacity: -1;
   width: 14rem;
   height:2.3rem;

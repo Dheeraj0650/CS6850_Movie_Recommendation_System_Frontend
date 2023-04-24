@@ -6,12 +6,61 @@ import Alerts from './Alerts';
 import Box from '@mui/material/Box';
 import React, { useState, useRef } from 'react';
 import Zoom from '@mui/material/Zoom';
+import axios from 'axios';
 
 
 function App() {
 
+
+  const [movieName, setMovieName] = useState("");
+  const [predictBy, setPredictBy] = useState("");
+  const [isAlert, setIsAlert] = useState(false);
+
+  const handleSearchClick = (event, value) =>{
+    console.log(movieName);
+
+    if(movieName !== ""){
+      console.log("inn")
+      axios({
+        method:'post',
+        url:`http://127.0.0.1:8000/predict_movie/PredictMovie`,
+        data: {
+          movieName: movieName,
+        }
+      })
+      .then(response => {
+        // handle success
+        console.log(response);
+        var responseData = JSON.parse(response.data);
+        console.log(responseData);
+        setGridItems(responseData);
+      })
+      .catch(error => {
+        // handle error
+        console.log(error);
+      });
+    }
+
+    // const data = {
+    //   firstName: 'John',
+    //   lastName: 'Doe',
+    // };
+    
+    // axios.post('http://127.0.0.1:8000/predict_movie/post', data,   {
+    //   'X-CSRFToken': "hello world" // Replace csrf_token with your actual CSRF token
+    // })
+    //   .then(response => {
+    //     // handle success
+    //     console.log(response);
+    //   })
+    //   .catch(error => {
+    //     // handle error
+    //     console.log(error);
+    //   });    
+  }
+
   const handleInputChange = (event, value) => {
-    setMovieName(value);
+    setMovieName(event.target.value);
   }
 
   const handlePredictBy = (event) =>{
@@ -19,23 +68,7 @@ function App() {
     setIsAlert(true);
   }
 
-  const [gridItems, setGridItems] = useState([
-    { name:"Gabbar singh" , text: 'pawan kalyan 1' },
-    { name:"Kushi", text: 'pawan kalyan  2' },
-    { name:"OG", text: 'pawan kalyan  3' },
-    { name:"Bheemla nayak", text: 'pawan kalyan  4' },
-    { name:"Toli prema", text: 'pawan kalyan  5' },
-    { name:"Sardaar", text: 'pawan kalyan  6' },
-    { name:"puli", text: 'pawan kalyan 7' },
-  ]);
-
-  const [movieName, setMovieName] = useState("");
-  const [predictBy, setPredictBy] = useState("");
-  const [isAlert, setIsAlert] = useState(false);
-
-
-  console.log(movieName);
-  console.log(predictBy);
+  const [gridItems, setGridItems] = useState([]);
 
   return (
     <Router>
@@ -49,7 +82,7 @@ function App() {
                   </Zoom>
                   <Route path = "/">
                       <Navbar />
-                      <SearchBar handleInputChange = {handleInputChange} handlePredictBy={handlePredictBy}/>
+                      <SearchBar handleInputChange = {handleInputChange} handlePredictBy={handlePredictBy} handleSearchClick={handleSearchClick}/>
 
                       <div className="grid-container">
                         {gridItems.map((item) => (
