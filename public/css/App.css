@@ -529,7 +529,7 @@ html {
 
 .grid-container{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); /* Automatically fit as many columns as possible with a minimum width of 200px */
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); /* Automatically fit as many columns as possible with a minimum width of 200px */
 }  
 
 .search-container{
