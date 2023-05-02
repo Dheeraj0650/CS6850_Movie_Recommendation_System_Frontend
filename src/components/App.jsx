@@ -2,145 +2,67 @@ import {BrowserRouter as Router, Switch , Route} from 'react-router-dom';
 import SearchBar from './SearchBar';
 import Navbar from './Navbar';
 import Intro from './Intro';
+import Loader from './Loader';
 import MovieCard from './MovieCards';
+import HomeMovieCard from './HomeMovieCards';
 import Alerts from './Alerts';
 import Box from '@mui/material/Box';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Zoom from '@mui/material/Zoom';
 import axios from 'axios';
-
+import ButtonGroup2 from './ButtonGroup2';
+import RateMoviesCard from './RateMoviesCard';
 
 function App() {
 
-  var movies = [{
-    "poster_path": "/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
-    "adult": false,
-    "overview": "When an unexpected enemy emerges and threatens global safety and security, Nick Fury, director of the international peacekeeping agency known as S.H.I.E.L.D., finds himself in need of a team to pull the world back from the brink of disaster. Spanning the globe, a daring recruitment effort begins!",
-    "release_date": "2012-04-25",
-    "genre_ids": [
-      878,
-      28,
-      12
-    ],
-    "id": 24428,
-    "original_title": "The Avengers",
-    "original_language": "en",
-    "title": "The Avengers",
-    "backdrop_path": "/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
-    "popularity": 7.353212,
-    "vote_count": 8503,
-    "video": false,
-    "vote_average": 7.33
-  },
-  {
-    "poster_path": "/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
-    "adult": false,
-    "overview": "British Ministry agent John Steed, under direction from \"Mother\", investigates a diabolical plot by arch-villain Sir August de Wynter to rule the world with his weather control machine. Steed investigates the beautiful Doctor Mrs. Emma Peel, the only suspect, but simultaneously falls for her and joins forces with her to combat Sir August.",
-    "release_date": "1998-08-13",
-    "genre_ids": [
-      53
-    ],
-    "id": 9320,
-    "original_title": "The Avengers",
-    "original_language": "en",
-    "title": "The Avengers",
-    "backdrop_path": "/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
-    "popularity": 2.270454,
-    "vote_count": 111,
-    "video": false,
-    "vote_average": 4.7
-  },
-  {
-    "poster_path": "/t90Y3G8UGQp0f0DrP60wRu9gfrH.jpg",
-    "adult": false,
-    "overview": "When Tony Stark tries to jumpstart a dormant peacekeeping program, things go awry and Earth’s Mightiest Heroes are put to the ultimate test as the fate of the planet hangs in the balance. As the villainous Ultron emerges, it is up to The Avengers to stop him from enacting his terrible plans, and soon uneasy alliances and unexpected action pave the way for an epic and unique global adventure.",
-    "release_date": "2015-04-22",
-    "genre_ids": [
-      28,
-      12,
-      878
-    ],
-    "id": 99861,
-    "original_title": "Avengers: Age of Ultron",
-    "original_language": "en",
-    "title": "Avengers: Age of Ultron",
-    "backdrop_path": "/570qhjGZmGPrBGnfx70jcwIuBr4.jpg",
-    "popularity": 7.557812,
-    "vote_count": 3924,
-    "video": false,
-    "vote_average": 7.4
-  },
-  {
-    "poster_path": "/imTUeuHuxVLxC7sxKqi2G0RPF7k.jpg",
-    "adult": false,
-    "overview": "This Australian children's film is about scientist Bill Stewart goes to Fiji with his son Tim to investigate the appearance of the Crown of Thorns starfish in the reefs off the island.",
-    "release_date": "1973-10-20",
-    "genre_ids": [],
-    "id": 392031,
-    "original_title": "Avengers of the Reef",
-    "original_language": "en",
-    "title": "Avengers of the Reef",
-    "backdrop_path": null,
-    "popularity": 1.05,
-    "vote_count": 0,
-    "video": false,
-    "vote_average": 0
-  },
-  {
-    "poster_path": "/u7vvexSU81Qk20yU7Vog23Ogob.jpg",
-    "adult": false,
-    "overview": "Mysterious Wakanda lies in the darkest heart of Africa, unknown to most of the world. An isolated land hidden behind closed borders, fiercely protected by its young king - the Black Panther. But when brutal alien invaders attack, the threat leaves the Black Panther with no option but to go against the sacred decrees of his people and ask for help from outsiders.",
-    "release_date": "2006-08-08",
-    "genre_ids": [
-      16,
-      28,
-      878
-    ],
-    "id": 14611,
-    "original_title": "Ultimate Avengers 2",
-    "original_language": "en",
-    "title": "Ultimate Avengers 2",
-    "backdrop_path": "/85NqI4WuCim6dZexmTPUAi13Af0.jpg",
-    "popularity": 1.912805,
-    "vote_count": 33,
-    "video": false,
-    "vote_average": 6.33
-  },
-  {
-    "poster_path": "/we6igIU5gXVwuSL6M6pJP75TwEf.jpg",
-    "adult": false,
-    "overview": "When a nuclear missile was fired at Washington in 1945, Captain America managed to detonate it in the upper atmosphere. But then he fell miles into the icy depths of the North Atlantic, where he remained lost for over sixty years. But now, with the world facing the very same evil, Captain America must rise again as our last hope for survival.",
-    "release_date": "2006-02-21",
-    "genre_ids": [
-      28,
-      16,
-      878
-    ],
-    "id": 14609,
-    "original_title": "Ultimate Avengers",
-    "original_language": "en",
-    "title": "Ultimate Avengers",
-    "backdrop_path": "/mZO4V0ALx15QTgWr4SaXYGT7i60.jpg",
-    "popularity": 1.691503,
-    "vote_count": 44,
-    "video": false,
-    "vote_average": 6.44
-  }]
-
+  var movies = [{'adult': false, 'backdrop_path': '/3Rfvhy1Nl6sSGJwyjb0QiZzZYlB.jpg', 'genre_ids': [16, 12, 10751, 35], 'id': 862, 'original_language': 'en', 'original_title': 'Toy Story', 'overview': "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.", 'popularity': 116.851, 'poster_path': '/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg', 'release_date': '1995-10-30', 'title': 'Toy Story', 'video': false, 'vote_average': 7.969, 'vote_count': 16618}, {'adult': false, 'backdrop_path': '/qSxeCfWUUyht9hZgaaYmtPtTkw2.jpg', 'genre_ids': [12, 14, 10751], 'id': 8844, 'original_language': 'en', 'original_title': 'Jumanji', 'overview': "When siblings Judy and Peter discover an enchanted board game that opens the door to a magical world, they unwittingly invite Alan -- an adult who's been trapped inside the game for 26 years -- into their living room. Alan's only hope for freedom is to finish the game, which proves risky as all three find themselves running from giant rhinoceroses, evil monkeys and other terrifying creatures.", 'popularity': 17.19, 'poster_path': '/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg', 'release_date': '1995-12-15', 'title': 'Jumanji', 'video': false, 'vote_average': 7.2, 'vote_count': 9567}, {'adult': false, 'backdrop_path': '/mWINg2BwQ2RBNIN8WSMjNbkih3d.jpg', 'genre_ids': [35, 27, 14], 'id': 12110, 'original_language': 'en', 'original_title': 'Dracula: Dead and Loving It', 'overview': "When a lawyer shows up at the vampire's doorstep, he falls prey to his charms and joins him in his search for fresh blood. Enter Professor Van Helsing, who may be the only one able to vanquish the Count.", 'popularity': 14.312, 'poster_path': '/4rRfZz8YnHNRr16t3CFcJrPdXHi.jpg', 'release_date': '1995-12-22', 'title': 'Dracula: Dead and Loving It', 'video': false, 'vote_average': 6.037, 'vote_count': 829}, {'adult': false, 'backdrop_path': '/p1mr2xCu4VSl7y41wDOV3swGQJf.jpg', 'genre_ids': [35, 18, 10749], 'id': 6620, 'original_language': 'en', 'original_title': 'Sabrina', 'overview': "Linus and David Larrabee are the two sons of a very wealthy family. Linus is all work – busily running the family corporate empire, he has no time for a wife and family. David is all play – technically he is employed by the family business, but never shows up for work, spends all his time entertaining, and has been married and divorced three times. Meanwhile, Sabrina Fairchild is the young, shy, and awkward daughter of the household chauffeur, who goes away to Paris for two years, and returns to capture David's attention, while falling in love with Linus.", 'popularity': 17.526, 'poster_path': '/8vvgKw3DbEPNlJAdHe7xXzhb2gN.jpg', 'release_date': '1954-09-10', 'title': 'Sabrina', 'video': false, 'vote_average': 7.526, 'vote_count': 1083}, {'adult': false, 'backdrop_path': '/9EUmwXS6EbY5djAhLtBGzUbBwNV.jpg', 'genre_ids': [878], 'id': 830, 'original_language': 'en', 'original_title': 'Forbidden Planet', 'overview': 'Starship C57D travels to planet Altair 4 in search of the crew of spaceship "Bellerophon," a scientific expedition that has been missing for 20 years, only to find themselves unwelcome by the expedition\'s lone survivor and warned of destruction by an invisible force if they don\'t turn back immediately.', 'popularity': 16.022, 'poster_path': '/aq0OQfRS7hDDI8vyD0ICbH9eguC.jpg', 'release_date': '1956-03-23', 'title': 'Forbidden Planet', 'video': false, 'vote_average': 7.276, 'vote_count': 776}, {'adult': false, 'backdrop_path': '/ka6np2LONtAElZOVeebb3mwSTBs.jpg', 'genre_ids': [18], 'id': 687, 'original_language': 'en', 'original_title': 'Dead Man Walking', 'overview': 'A death row inmate turns for spiritual guidance to a local nun in the days leading up to his scheduled execution for the murders of a young couple.', 'popularity': 11.285, 'poster_path': '/wQmmJi5ypfHH2boXrQBmsep7qb2.jpg', 'release_date': '1995-12-29', 'title': 'Dead Man Walking', 'video': false, 'vote_average': 7.368, 'vote_count': 1165}]
   const [movieName, setMovieName] = useState("");
-  const [predictBy, setPredictBy] = useState("");
+  const [predictBy, setPredictBy] = useState("COSINE AND TF-IDF");
   const [isAlert, setIsAlert] = useState(false);
+  const [method, setMethod] = useState("CONTENT BASED");
+
+  const [gridItems, setGridItems] = useState([]);
+  const [gridRatingItems, setGridRatingItems] = useState([]);
+  const [homePageItems, setHomePageItems] = useState([]);
+  const [ratingMovies, setRatingMovies] = useState(movies);
+  const [maxRating, setMaxRating] = useState(["", 0]);
+  const [loading, setLoading] = useState(false);
+
+
+  const getHomePageItems = () => {
+    axios({
+      method:'post',
+      url:`http://127.0.0.1:8000/predict_movie/HomePageMovie`,
+      data: {
+        movieName: movieName,
+      }
+    })
+    .then(response => {
+      // handle success
+      console.log(response);
+      var responseData = JSON.parse(response.data);
+      console.log(responseData);
+      setHomePageItems(responseData);
+    })
+    .catch(error => {
+      // handle error
+      console.log(error);
+    });
+  }
 
   const handleSearchClick = (event, value) =>{
     console.log(movieName);
-
+    console.log(predictBy);
     if(movieName !== ""){
       console.log("inn")
+
       axios({
         method:'post',
         url:`http://127.0.0.1:8000/predict_movie/PredictMovie`,
         data: {
           movieName: movieName,
+          predictBy: predictBy,
+          method: method
         }
       })
       .then(response => {
@@ -155,35 +77,59 @@ function App() {
         console.log(error);
       });
     }
-
-    // const data = {
-    //   firstName: 'John',
-    //   lastName: 'Doe',
-    // };
-    
-    // axios.post('http://127.0.0.1:8000/predict_movie/post', data,   {
-    //   'X-CSRFToken': "hello world" // Replace csrf_token with your actual CSRF token
-    // })
-    //   .then(response => {
-    //     // handle success
-    //     console.log(response);
-    //   })
-    //   .catch(error => {
-    //     // handle error
-    //     console.log(error);
-    //   });    
   }
 
   const handleInputChange = (event, value) => {
     setMovieName(event.target.value);
   }
 
-  const handlePredictBy = (event) =>{
+  const handlePredictBy = (event,value) =>{
     setPredictBy(event.target.innerText);
     setIsAlert(true);
   }
 
-  const [gridItems, setGridItems] = useState([]);
+  const handleMethodChange = (event,value) =>{
+    setMethod(event.target.innerText);
+    setMaxRating(["", 0]);
+    setGridRatingItems([]);
+  }
+
+  const handleRatingChange = (movie, rating) =>{
+    if(maxRating[1] < Number(rating)){
+      setMaxRating([movie, Number(rating)]);
+    }
+    console.log(maxRating);
+  }
+
+  const handleRatingClick = () => {
+      setLoading(true);
+      axios({
+        method:'post',
+        url:`http://127.0.0.1:8000/predict_movie/PredictMovie`,
+        data: {
+          movieName: movieName,
+          predictBy: predictBy,
+          method: method,
+          inputData: maxRating[0]
+        }
+      })
+      .then(response => {
+        setLoading(false);
+        // handle success
+        console.log(response);
+        var responseData = JSON.parse(response.data);
+        console.log(responseData);
+        setGridRatingItems(responseData);
+      })
+      .catch(error => {
+        // handle error
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    getHomePageItems();
+  }, []);
 
   return (
     <Router>
@@ -197,16 +143,47 @@ function App() {
                   </Zoom>
                   <Route path = "/">
                       <Navbar />
-                      <SearchBar handleInputChange = {handleInputChange} handlePredictBy={handlePredictBy} handleSearchClick={handleSearchClick}/>
+                        {
+                          method === "CONTENT BASED" && (
+                            <>
+                              <SearchBar handleInputChange = {handleInputChange} handleMethodChange={handleMethodChange} handlePredictBy={handlePredictBy} handleSearchClick={handleSearchClick}/>
+                              <div className="grid-container">
+                                {gridItems.length !== 0 && gridItems.map((item) => (
+                                    <MovieCard details={item} width={"18rem"} height={"24rem"}/>
+                                ))}
+                              </div>
+                              {gridItems.length === 0 && homePageItems.map((item) => (
+                                <>
+                                  <div className='genre-title'>{item[0]}</div>
+                                  <div className="grid-container-home">
+                                    <HomeMovieCard data={item} width={"18rem"} height={"24rem"}/>
+                                  </div>
+                                </>
+                              ))}
+                            </>
+                          )
+                        }
 
-                      <div className="grid-container">
-                        {/* {gridItems.map((item) => (
-                          <Intro details = {item}/>
-                        ))} */}
-                        {gridItems.map((item) => (
-                          <MovieCard details={item} width={"18rem"} height={"24rem"}/>
-                        ))}
-                      </div>
+                        {
+                          method === "COLLABORATIVE" && (
+                            <>
+                              <div className="search-container">
+                                <ButtonGroup2 handleMethodChange={handleMethodChange}/>
+                                {!loading && <button type="button" class="btn btn-outline-danger" onClick={handleRatingClick}><i class="fa-brands fa-searchengin fa-2x"></i></button>}
+                                {loading && <Loader />}
+                              </div>
+                              <div className="grid-container-recommendation">
+                                {gridRatingItems.length === 0 && ratingMovies.length !== 0 && ratingMovies.map((item) => (
+                                  <RateMoviesCard card={item} handleRatingChange={handleRatingChange}/>
+                                ))}
+                                {gridRatingItems !== 0 && gridRatingItems.map((item) => (
+                                    <MovieCard details={item} width={"18rem"} height={"24rem"}/>
+                                ))}
+                              </div>
+                            </>
+                          )
+                        }
+
                   </Route>
                 </div>
             </div>

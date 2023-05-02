@@ -149,14 +149,12 @@
 //   { label: 'Monty Python and the Holy Grail', year: 1975 },
 // ];
 
-
-
-
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import ButtonGroup from './ButtonGroup';
+import ButtonGroup2 from './ButtonGroup2';
 
 export default function FreeSolo(props) {
   return (
@@ -188,7 +186,8 @@ export default function FreeSolo(props) {
       /> */}
 
           </Stack>
-          <button type="button" class="btn btn-outline-primary" style = {{marginLeft:"1rem"}} onClick={props.handleSearchClick}><i class="fa-brands fa-searchengin fa-2x"></i></button>
+          <button type="button" class="btn btn-outline-primary" style = {{marginLeft:"1rem", marginRight:"1rem"}} onClick={props.handleSearchClick}><i class="fa-brands fa-searchengin fa-2x"></i></button>
+          <ButtonGroup2 handleMethodChange={props.handleMethodChange}/>
         </div>
   );
 }

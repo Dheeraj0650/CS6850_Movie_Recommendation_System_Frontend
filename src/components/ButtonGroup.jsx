@@ -4,9 +4,10 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 
 const buttons = [
-  <Button key="one">By ID</Button>,
-  <Button key="two">By Genere</Button>,
-  <Button key="three">By Name</Button>,
+  <Button key="one">Cosine and TF-IDF</Button>,
+  <Button key="two">Cosine and Count Vec</Button>,
+  <Button key="three">KNN and TF-IDF</Button>,
+  <Button key="two">KNN and Count Vec</Button>,
 ];
 
 export default function GroupOrientation(props) {

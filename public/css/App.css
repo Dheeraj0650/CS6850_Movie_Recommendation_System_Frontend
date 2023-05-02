@@ -544,3 +544,18 @@ html {
   justify-content: center;
   align-items: center;
 }
+
+.genre-title{
+  text-align: center;
+  font-family: 'Bruno Ace SC', cursive;
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-top: 2rem;
+  color:#F97B22
+}
+
+.grid-container-recommendation{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  margin: 2rem;
+}
